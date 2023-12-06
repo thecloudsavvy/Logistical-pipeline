@@ -1,0 +1,27 @@
+name: Deployment Workflow
+on:
+    push:
+      branches:
+        - master
+
+jobs:
+    pusher:
+        runs-on: ubuntu-latest
+        steps:
+            - name: pusher
+              run: echo "Push the code"
+            - name: confirm the repository of Docker Hub
+              uses: actions/checkout@v4
+            - name: Logging into Docker Hub
+              uses: docker/login-action@v3
+              with:
+                username: ${{ secrets.DOCKERHUB_USERNAME }}
+                password: ${{ secrets.DOCKERHUB_PASSWORD }}
+            - name: "Build the image for the App"
+              env:
+                IMAGE_NAME: logis1
+                VERSION: newest
+                USERNAME: abatan
+              run: |
+                  docker build -t $USERNAME/$IMAGE_NAME:$VERSION .
+                  docker push $USERNAME/$IMAGE_NAME:$VERSION
