@@ -1,2 +1,2 @@
-FROM node:latest
-COPY . /app
+FROM nginx
+COPY . /usr/share/nginx/html
