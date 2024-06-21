@@ -30,3 +30,14 @@ jobs:
               env:
                 SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
                 SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+
+            - name: "install apache"
+              run: |
+                  sudo apt-get update
+                  sudo apt-get install apache2 -y
+                  sudo systemctl start apache2
+                  sudo systemctl enable apache2
+                  cd /var/www/html
+                  sudo rm -rf index.html
+                  git clone https://github.com/thecloudsavvy/Logistical-pipeline.git . 
+                  sudo systemctl restart apache2  
