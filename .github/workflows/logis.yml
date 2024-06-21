@@ -8,7 +8,7 @@ jobs:
     pusher:
         runs-on: self-hosted
         steps:
-            - name: pusher
+            - name: "echo the code"
               run: echo "Push the code"
             - name: confirm the repository of Docker Hub
               uses: actions/checkout@v4
