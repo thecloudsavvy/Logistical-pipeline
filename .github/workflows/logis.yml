@@ -42,14 +42,14 @@ jobs:
                   name: dependency-check-report
                   path: dependency-check-report
 
-            - name: "install apache"
-              run: |
-                  sudo apt-get update
-                  sudo apt-get install apache2 -y
-                  sudo systemctl start apache2
-                  sudo systemctl enable apache2
-                  sudo chown -R $USER:$USER /var/www/html
-                  cd /var/www/html
-                  sudo rm -rf index.html
-                  git clone https://github.com/thecloudsavvy/Logistical-pipeline.git . 
-                  sudo systemctl restart apache2  
+            # - name: "install apache"
+            #   run: |
+            #       sudo apt-get update
+            #       sudo apt-get install apache2 -y
+            #       sudo systemctl start apache2
+            #       sudo systemctl enable apache2
+            #       sudo chown -R $USER:$USER /var/www/html
+            #       cd /var/www/html
+            #       sudo rm -rf index.html
+            #       git clone https://github.com/thecloudsavvy/Logistical-pipeline.git . 
+            #       sudo systemctl restart apache2  
