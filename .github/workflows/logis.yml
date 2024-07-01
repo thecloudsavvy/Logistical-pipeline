@@ -1,4 +1,4 @@
-name: Simple Deployment Workflow
+name: Deployment Workflow
 on:
     push:
       branches:
