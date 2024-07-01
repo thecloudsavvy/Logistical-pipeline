@@ -6,7 +6,7 @@ on:
 
 jobs:
     pusher:
-        runs-on: self-hosted
+        runs-on: ubuntu-latest
         steps:
             - name: "echo the code"
               run: echo "Push the code"
