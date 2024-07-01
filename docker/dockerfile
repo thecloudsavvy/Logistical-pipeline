@@ -1,0 +1,15 @@
+# Use a base image with NGINX
+FROM openjdk:11-jre-slim
+
+# Install Dependency-Check
+RUN apt-get update && \
+    apt-get install -y curl unzip && \
+    curl -L -o dependency-check.zip https://github.com/jeremylong/DependencyCheck/releases/download/v7.4.4/dependency-check-7.4.4-release.zip && \
+    unzip dependency-check.zip -d /opt/dependency-check && \
+    rm dependency-check.zip
+
+# Set environment variables
+ENV PATH="/opt/dependency-check/bin:$PATH"
+
+# Set the entry point to the dependency-check script
+ENTRYPOINT ["dependency-check.sh"]
