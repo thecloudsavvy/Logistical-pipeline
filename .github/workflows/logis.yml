@@ -30,6 +30,15 @@ jobs:
                 sudo apt update
                 sudo apt install unzip
 
+            - name: Set up JDK
+              uses: actions/setup-java@v2
+              with:
+                java-version: '11'
+      
+            - name: Set JAVA_HOME
+              run: |
+                echo "JAVA_HOME=$(which java)" | tee -a $GITHUB_ENV
+
             - name: Download OWASP Dependency Check
               run: |
                 VERSION=$(curl -s https://jeremylong.github.io/DependencyCheck/current.txt)
