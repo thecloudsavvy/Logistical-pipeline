@@ -47,6 +47,7 @@ jobs:
                 unzip dependency-check.zip
             - name: Run OWASP Dependency-Check
               run: |
+                export PATH="./dependency-check/bin:$PATH"
                 ./dependency-check/bin/dependency-check.sh --out report.html --scan .
                 rm -rf dependency-check*
             - name: Run OWASP Dependency-Check
