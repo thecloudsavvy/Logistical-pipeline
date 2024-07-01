@@ -20,7 +20,7 @@ jobs:
             - name: "Build the image for the App"
               env:
                 IMAGE_NAME: logis2
-                VERSION: newest
+                VERSION: latest
                 USERNAME: abatan
               run: |
                   docker build -t $USERNAME/$IMAGE_NAME:$VERSION .
