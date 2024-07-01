@@ -39,15 +39,20 @@ jobs:
             - name: Set JAVA_HOME
               run: |
                 echo "JAVA_HOME=$(which java)" | tee -a $GITHUB_ENV
+                export JAVA_HOME=$JAVA_HOME
 
             - name: Download OWASP Dependency Check
               run: |
                 VERSION=$(curl -s https://jeremylong.github.io/DependencyCheck/current.txt)
                 curl -sL "https://github.com/jeremylong/DependencyCheck/releases/download/v$VERSION/dependency-check-$VERSION-release.zip" --output dependency-check.zip
                 unzip dependency-check.zip
-            - name: Run OWASP Dependency-Check
+
+            - name: Set PATH for Dependency-Check
               run: |
                 export PATH="./dependency-check/bin:$PATH"
+                
+            - name: Run OWASP Dependency-Check
+              run: |
                 ./dependency-check/bin/dependency-check.sh --out report.html --scan .
                 rm -rf dependency-check*
             - name: Run OWASP Dependency-Check
