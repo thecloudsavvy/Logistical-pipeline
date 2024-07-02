@@ -41,12 +41,13 @@ jobs:
             - name: Run OWASP Dependency Check
               run: |
                 docker run --rm \
-                  -v $(pwd):/src \
-                  owasp/dependency-check:latest \
-                  --scan /src \
-                  --format HTML \
-                  --project "My Project" \
-                  --out /github/workspace/report
+                -v $(pwd):/src \
+                -e NVD_API_KEY=${{ secrets.NVD_API_KEY }} \
+                owasp/dependency-check:latest \
+                --scan /src \
+                --format HTML \
+                --project "My Project" \
+                --out /github/workspace/report
       
             - name: Upload OWASP Dependency Check report
               uses: actions/upload-artifact@v2
