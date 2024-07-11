@@ -56,7 +56,7 @@ jobs:
 
       - name: "Use helm to install our charts"
         run: |
-          helm upgrade --install myapp myapp -f myapp/values.yaml --set image.tag=${{ env.VERSION}} --set replicaCount=3 --set service.spec.selector.app=${{ env.BLUE }}
+          helm upgrade --install myapp myapp -f myapp/values.yaml --set image.tag=${{ env.VERSION}} --set replicaCount=3 
 
 
 
