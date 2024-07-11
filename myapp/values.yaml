@@ -40,11 +40,18 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-application-blue
+  namespace: default
 spec:
   selector:
-    app:
-  type: ClusterIP
-  port: 80
+    app: my-application-blue
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
 
 ingress:
   enabled: false
