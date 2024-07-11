@@ -5,7 +5,7 @@ on:
        - master
 jobs:
   blue-green-deploy:
-      runs-on: ununtu:latest
+      runs-on: ubuntu:latest
 
       env:
         RED: my-application-red
