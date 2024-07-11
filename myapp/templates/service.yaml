@@ -4,7 +4,8 @@ metadata:
   name: myapp-service
 spec:
   selector:
-    app: ${{ .values.service.spec.selector.app }}  
+    app:  my-application-blue
+    version: my-application-blue
   ports:
     - protocol: TCP
       port: 80
