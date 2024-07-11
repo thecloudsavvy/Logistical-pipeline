@@ -1,0 +1,86 @@
+name: blue-green-deploy
+on: 
+  push: 
+    branches:
+       - master
+jobs:
+  blue-green-deploy:
+      runs-on: ununtu:latest
+
+      env:
+        RED: my-application-red
+        BLUE: my-application-blue
+
+      steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: generate random tag num
+        run: |
+              echo "VERSION=${RANDOM}" >> $GITHUB_ENV 
+
+      - name: Logging into Docker Hub
+        uses: docker/login-action@v3
+        with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: "Build the image for the App"
+        env:
+          IMAGE_NAME: logis2
+          USERNAME: abatan
+        run: |
+            docker build -t abatan/logis:${{ env.VERSION }} .
+            docker push abatan/logis:${{ env.VERSION }}
+
+      - name: "Install kubectl"
+        uses: azure/setup-kubectl@v3
+        with: 
+          version: "v1.19.3"
+        id: "install-kubectl"
+
+      - name: "Setup AWS Credentials"
+        uses: aws-actions/configure-aws-credentials@v4
+        with: 
+          aws-region: "us-east-1"
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key:  ${{ secrets.AWS_SECRET_KEY }}
+      
+      - name: "Install Helm"
+        uses: azure/setup-helm@v4.2.0
+        id: "install-helm"
+
+      - name: "Use helm to install our charts"
+        run: |
+          helm upgrade --install myapp myapp -f myapp/values.yaml --set image.tag=${{ env.VERSION}} --set replicaCount=3 --set values.service.spec.selector.app=${{ env.BLUE }}
+
+
+
+
+      # - name: Deploy Blue Version
+      #   run: |
+      #     helm upgrade --install ${DEPLOYMENT_NAME}-blue -f myapp/values.yaml \
+      #       --set image.tag=${{ env.VERSION }}
+
+      # - name: Wait for Blue Deployment to be Ready
+      #   run: |
+      #     kubectl rollout status deployment/${DEPLOYMENT_NAME}-blue -n ${NAMESPACE}
+
+      # - name: Deploy Green Version
+      #   run: |
+      #     helm upgrade --install ${DEPLOYMENT_NAME}-green ${CHART_PATH} \
+      #       --namespace ${NAMESPACE} \
+      #       --values ${CHART_PATH}/values-green.yaml \
+      #       --set image.tag=${{ github.sha }}
+
+      # - name: Wait for Green Deployment to be Ready
+      #   run: |
+      #     kubectl rollout status deployment/${DEPLOYMENT_NAME}-green -n ${NAMESPACE}
+
+      # - name: Switch Traffic to Green
+      #   run: |
+      #     kubectl patch service ${DEPLOYMENT_NAME} -n ${NAMESPACE} \
+      #       -p '{"spec":{"selector":{"app":"my-application-green"}}}'
+
+      # - name: Scale Down Blue Version
+      #   run: |
+      #     kubectl scale deployment ${DEPLOYMENT_NAME}-blue --replicas=0 -n ${NAMESPACE}

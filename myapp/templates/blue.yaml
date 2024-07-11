@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-application-blue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-application-blue
+  template:
+    metadata:
+      labels:
+        app: my-application-blue
+    spec:
+      containers:
+      - name: logis
+        image: "abatan/logis:${{ .values.image.tag }}"
+        ports:
+        - containerPort: 80
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: my-application-blue
+#   namespace: default
+# spec:
+#   selector:
+#     app: my-application-blue
+#   ports:
+#     - protocol: TCP
+#       port: 80
+#       targetPort: 80

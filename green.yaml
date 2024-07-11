@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-application-green
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-application-green
+  template:
+    metadata:
+      labels:
+        app: my-application-green
+    spec:
+      containers:
+      - name: my-application
+        image: my-application-image:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-application-green
+  namespace: default
+spec:
+  selector:
+    app: my-application-green
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
